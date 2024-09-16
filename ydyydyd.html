@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marriage Prediction</title>
+    <link rel="stylesheet" href="styles.css">
+<style type="text/css" id="dcoder_stylesheet">body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    text-align: center;
+    padding: 20px;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #333;
+}
+
+input[type="text"], input[type="number"] {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#result {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f4f4f4;
+    display: none; /* Initially hidden */
+}
+
+.countdown {
+    margin-top: 20px;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+</style></head>
+<body>
+    <div class="container">
+        <h1>Marriage Prediction</h1>
+        <form id="predictionForm">
+            <label for="name">Enter your name:</label>
+            <input type="text" id="name" name="name" required placeholder="Your Name">
+            <br><br>
+            <label for="age">Enter your age:</label>
+            <input type="number" id="age" name="age" required placeholder="Your Age">
+            <br><br>
+            <button type="button" onclick="startCountdown()">Search</button>
+        </form>
+        <div id="countdown" class="countdown"></div>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function startCountdown() {
+            var name = document.getElementById("name").value;
+            var age = document.getElementById("age").value;
+
+            // Validate input
+            if (name === "" || age === "") {
+                alert("Please enter both your name and age.");
+                return;
+            }
+
+            // Set countdown timer
+            var countdownElement = document.getElementById('countdown');
+            var resultElement = document.getElementById('result');
+            var countdownValue = 15;
+
+            // Update countdown every second
+            var intervalId = setInterval(function() {
+                countdownElement.textContent = `Time remaining: ${countdownValue} seconds`;
+                countdownValue--;
+
+                if (countdownValue < 0) {
+                    clearInterval(intervalId);
+                    countdownElement.textContent = '';
+                    displayResult(name);
+                }
+            }, 1000); // 1000 milliseconds = 1 second
+
+            // Hide result initially
+            resultElement.style.display = 'none';
+        }
+
+        function displayResult(name) {
+            // Generate prediction
+            var prediction = generateRandomPrediction();
+
+            // Display result
+            var resultText = `
+                <h2>Prediction Result</h2>
+                <p><strong>${name}</strong>, based on our prediction:</p>
+                <p>You will get married in the year <strong>${prediction.marriageYear}</strong>.</p>
+                <p>You will have <strong>${prediction.childrenCount}</strong> child(ren).</p>
+                <p>Your child(ren) will be a <strong>${prediction.gender}</strong>.</p>
+            `;
+            document.getElementById('result').innerHTML = resultText;
+            document.getElementById('result').style.display = 'block';
+        }
+
+        function generateRandomPrediction() {
+            const marriageYears = Math.floor(Math.random() * 10) + 1;
+            const marriageYear = new Date().getFullYear() + marriageYears;
+            const childrenCount = Math.floor(Math.random() * 5) + 1;
+            const gender = Math.random() < 0.5 ? 'boy' : 'girl';
+
+            return {
+                marriageYear: marriageYear,
+                childrenCount: childrenCount,
+                gender: gender
+            };
+        }
+    </script>
+
+</body></html>
